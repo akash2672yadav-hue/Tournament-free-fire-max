@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khushinagar Fire Warriors Cup — Free Fire Max Tournament</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0d14;
+    --bg-alt:#121826;
+    --panel:#161d2c;
+    --fire:#ff6b35;
+    --yellow:#ffd23f;
+    --red:#c81e3a;
+    --cyan:#00d9ff;
+    --text:#f1f1ec;
+    --text-dim:#8b93a7;
+    --border:#232b3d;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+    line-height:1.5;
+  }
+  h1,h2,h3,.display{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+  }
+  a{color:inherit;text-decoration:none;}
+  .container{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,13,20,0.9);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .container{
+    display:flex;align-items:center;justify-content:space-between;
+    height:64px;
+  }
+  .logo{font-family:'Rajdhani';font-weight:700;font-size:20px;letter-spacing:0.04em;}
+  .logo span{color:var(--fire);}
+  .nav-cta{
+    background:var(--fire);color:#0a0d14;font-weight:700;
+    padding:9px 18px;border-radius:4px;font-size:14px;
+    text-transform:uppercase;letter-spacing:0.04em;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(255,107,53,.35);}
+
+  /* HERO */
+  .hero{
+    position:relative;
+    padding:100px 24px 80px;
+    text-align:center;
+    overflow:hidden;
+    border-bottom:1px solid var(--border);
+  }
+  .zone-ring{
+    position:absolute;top:50%;left:50%;
+    border:2px solid var(--fire);
+    border-radius:50%;
+    opacity:0.12;
+    transform:translate(-50%,-50%);
+    animation:shrink 6s ease-in-out infinite;
+  }
+  .zone-ring.r1{width:900px;height:900px;animation-delay:0s;}
+  .zone-ring.r2{width:650px;height:650px;border-color:var(--cyan);animation-delay:.8s;}
+  .zone-ring.r3{width:400px;height:400px;animation-delay:1.6s;}
+  @keyframes shrink{
+    0%{opacity:.18;}
+    50%{opacity:.05;}
+    100%{opacity:.18;}
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--panel);border:1px solid var(--border);
+    padding:6px 14px;border-radius:100px;
+    font-size:12px;font-weight:600;color:var(--yellow);
+    text-transform:uppercase;letter-spacing:0.08em;
+    margin-bottom:24px;position:relative;z-index:2;
+  }
+  .dot-live{width:8px;height:8px;border-radius:50%;background:#3ddc84;animation:pulse 1.4s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .hero h1{
+    font-size:clamp(38px,8vw,72px);
+    line-height:0.98;
+    position:relative;z-index:2;
+  }
+  .hero h1 .accent{color:var(--fire);}
+  .hero p.sub{
+    color:var(--text-dim);font-size:17px;max-width:520px;margin:20px auto 32px;
+    position:relative;z-index:2;
+  }
+  .hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
+  .btn-primary{
+    background:var(--fire);color:#0a0d14;font-weight:700;
+    padding:14px 30px;border-radius:4px;font-size:15px;
+    text-transform:uppercase;letter-spacing:0.04em;
+    border:none;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,107,53,.4);}
+  .btn-ghost{
+    border:1px solid var(--border);color:var(--text);
+    padding:14px 30px;border-radius:4px;font-size:15px;font-weight:600;
+    background:transparent;cursor:pointer;
+  }
+  .btn-ghost:hover{border-color:var(--fire);}
+
+  /* COUNTDOWN */
+  .countdown-box{margin:0 auto 28px;max-width:420px;position:relative;z-index:2;}
+  .cd-label{font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--fire);font-weight:700;margin-bottom:10px;}
+  .cd-label.cd-closed{color:var(--red);}
+  .cd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .cd-unit{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 4px;}
+  .cd-num{font-family:'Rajdhani';font-weight:700;font-size:28px;color:var(--yellow);}
+  .cd-unit-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;}
+  .cd-sub{font-size:12px;color:var(--text-dim);margin-top:12px;}
+
+  /* TICKER */
+  .ticker-wrap{
+    background:var(--bg-alt);border-bottom:1px solid var(--border);
+    padding:12px 0;overflow:hidden;white-space:nowrap;
+  }
+  .ticker-label{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--red);color:#fff;font-size:12px;font-weight:700;
+    padding:4px 10px;border-radius:3px;text-transform:uppercase;
+    margin-right:16px;vertical-align:middle;
+  }
+  #tickerTrack{display:inline-block;animation:ticker 22s linear infinite;vertical-align:middle;}
+  #tickerTrack span{margin-right:48px;color:var(--text-dim);font-size:14px;}
+  @keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+  /* STATS */
+  .stats{padding:64px 24px;border-bottom:1px solid var(--border);}
+  .stats-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;
+  }
+  .stat-card{background:var(--panel);padding:28px 20px;text-align:center;}
+  .stat-card .num{font-family:'Rajdhani';font-weight:700;font-size:34px;color:var(--yellow);}
+  .stat-card .label{font-size:13px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
+
+  /* WAITING LOUNGE GAME */
+  .game-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:24px;}
+  .game-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;}
+  .game-metric{font-family:'Rajdhani';font-weight:700;font-size:20px;}
+  .game-metric span{color:var(--yellow);}
+  .game-stage{
+    position:relative;height:360px;border-radius:8px;overflow:hidden;
+    background:linear-gradient(180deg,#0d2b3d 0%, #0a0d14 100%);
+    border:1px solid var(--border);
+  }
+  .game-stage::before{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(circle at 20% 30%, rgba(255,255,255,.06) 1px, transparent 1px),
+                      radial-gradient(circle at 70% 60%, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size:60px 60px, 90px 90px;
+  }
+  .crate{
+    position:absolute;top:-40px;font-size:30px;cursor:pointer;user-select:none;
+    animation-name:fall;animation-timing-function:linear;
+    filter:drop-shadow(0 4px 6px rgba(0,0,0,.4));
+  }
+  .crate:hover{transform:scale(1.15);}
+  .crate.popped{animation:none !important;transform:scale(1.7);opacity:0;transition:all .25s ease;}
+  @keyframes fall{ from{top:-40px;} to{top:100%;} }
+  .game-overlay{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:10px;background:rgba(10,13,20,.85);text-align:center;padding:20px;z-index:5;
+  }
+  .game-overlay.hidden{display:none;}
+  .name-prompt{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;justify-content:center;}
+  .name-prompt input{max-width:200px;}
+  .lb-row{display:flex;justify-content:space-between;align-items:center;padding:9px 4px;border-bottom:1px solid var(--border);font-size:14px;}
+  .lb-row .rank{color:var(--cyan);font-family:'Rajdhani';font-weight:700;width:30px;flex-shrink:0;}
+  .lb-row .name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px;}
+  .lb-row .score{color:var(--yellow);font-weight:700;flex-shrink:0;}
+
+  /* SECTION HEADER */
+  .section{padding:72px 24px;border-bottom:1px solid var(--border);}
+  .section-head{margin-bottom:36px;}
+  .section-head .tag{color:var(--fire);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;}
+  .section-head h2{font-size:clamp(26px,4vw,38px);margin-top:6px;}
+
+  /* RULES */
+  .rules-list{list-style:none;counter-reset:rule;}
+  .rules-list li{
+    counter-increment:rule;
+    display:flex;gap:18px;padding:18px 0;border-bottom:1px solid var(--border);
+  }
+  .rules-list li:last-child{border-bottom:none;}
+  .rules-list li::before{
+    content:counter(rule,decimal-leading-zero);
+    font-family:'Rajdhani';font-weight:700;color:var(--cyan);font-size:22px;flex-shrink:0;width:36px;
+  }
+  .rules-list li p{color:var(--text-dim);font-size:15px;}
+  .rules-list li strong{display:block;color:var(--text);font-size:16px;margin-bottom:2px;}
+
+  /* REGISTER */
+  .reg-wrap{display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;}
+  @media(max-width:800px){.reg-wrap{grid-template-columns:1fr;}}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:28px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:6px;font-weight:600;}
+  .field input{
+    width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);
+    padding:11px 13px;border-radius:6px;font-size:14px;font-family:'Inter';
+  }
+  .field input:focus{outline:none;border-color:var(--fire);}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:480px){.field-row{grid-template-columns:1fr;}}
+  .fee-note{
+    background:rgba(255,107,53,.08);border:1px solid rgba(255,107,53,.3);
+    border-radius:6px;padding:12px 14px;font-size:13px;color:var(--yellow);margin-bottom:18px;
+  }
+  #regMsg{font-size:14px;margin-top:12px;}
+  .payment-box{margin-top:22px;padding-top:22px;border-top:1px dashed var(--border);}
+  .payment-box h3{font-size:16px;color:var(--cyan);margin-bottom:10px;}
+  .upi-code{
+    background:var(--bg);border:1px solid var(--border);border-radius:6px;
+    padding:12px 14px;font-family:monospace;font-size:15px;color:var(--yellow);
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;
+  }
+  .copy-btn{background:none;border:1px solid var(--border);color:var(--text-dim);padding:5px 10px;border-radius:4px;font-size:12px;cursor:pointer;}
+  .copy-btn:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  /* ORGANIZERS */
+  .organizers-wrap{display:flex;justify-content:center;}
+  .organizer-photo-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    padding:20px 28px;max-width:360px;text-align:center;
+  }
+  .organizer-names{font-family:'Rajdhani';font-weight:700;font-size:20px;text-transform:uppercase;}
+  .organizer-names .a{color:var(--yellow);}
+  .organizer-names .v{color:var(--cyan);}
+  .organizer-photo-card .role{color:var(--text-dim);font-size:13px;margin-top:4px;}
+
+  /* FOOTER */
+  footer{padding:36px 24px;text-align:center;color:var(--text-dim);font-size:13px;}
+  footer a.admin-link{color:var(--text-dim);text-decoration:underline;opacity:0.5;font-size:12px;}
+  footer a.admin-link:hover{opacity:1;}
+
+  /* ADMIN MODAL */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.75);
+    display:none;align-items:center;justify-content:center;z-index:200;padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    padding:26px;max-width:520px;width:100%;max-height:85vh;overflow-y:auto;
+  }
+  .modal h3{margin-bottom:16px;}
+  .modal .close-x{float:right;cursor:pointer;color:var(--text-dim);font-size:20px;}
+  .reg-row{border-bottom:1px solid var(--border);padding:10px 0;font-size:13px;}
+  .reg-row b{color:var(--yellow);}
+  .update-row{border-bottom:1px solid var(--border);padding:8px 0;font-size:13px;color:var(--text-dim);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="logo">KHUSHINAGAR <span>FIRE WARRIORS CUP</span></div>
+    <a href="#register" class="nav-cta">Register</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="zone-ring r1"></div>
+  <div class="zone-ring r2"></div>
+  <div class="zone-ring r3"></div>
+  <span class="eyebrow"><span class="dot-live"></span> <span id="heroEyebrowText">Registration Open</span></span>
+  <h1>KHUSHINAGAR FIRE<br>WARRIORS <span class="accent">CUP</span></h1>
+  <p class="sub">Ready for Battle Squads — gather your squad, drop into the zone, and fight for the crown. ₹1000 entry per squad. Winner takes the pool.</p>
+  <p style="color:var(--text-dim);font-size:13px;letter-spacing:0.04em;text-transform:uppercase;margin-top:-16px;margin-bottom:24px;position:relative;z-index:2;">Organized by <span style="color:var(--yellow);font-weight:600;">Akash</span> & <span style="color:var(--cyan);font-weight:600;">Vikash</span></p>
+
+  <div class="countdown-box">
+    <div class="cd-label" id="cdLabel">Registration Closes In</div>
+    <div class="cd-grid">
+      <div class="cd-unit"><div class="cd-num" id="cdDays">--</div><div class="cd-unit-label">Days</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cdHours">--</div><div class="cd-unit-label">Hours</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cdMins">--</div><div class="cd-unit-label">Min</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cdSecs">--</div><div class="cd-unit-label">Sec</div></div>
+    </div>
+    <div class="cd-sub">Last date to register: <b>31 October 2026</b> · Tournament starts <b id="tournamentDateText">20 November 2026</b></div>
+  </div>
+
+  <div class="hero-ctas">
+    <a href="#register"><button class="btn-primary">Register Squad — ₹1000</button></a>
+    <a href="#rules"><button class="btn-ghost">Read Rules</button></a>
+  </div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="container">
+    <span class="ticker-label">🔥 Live</span>
+    <span id="tickerTrack"><span id="tickerContent">Loading updates…</span></span>
+  </div>
+</div>
+
+<section class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="num">₹1000</div><div class="label">Entry Fee / Squad</div></div>
+      <div class="stat-card"><div class="num" id="squadCount">0</div><div class="label">Squads Registered</div></div>
+      <div class="stat-card"><div class="num">4</div><div class="label">Players / Squad</div></div>
+      <div class="stat-card"><div class="num">Bermuda</div><div class="label">Map</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="lounge">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Waiting Lounge</div>
+      <h2>Loot Rush — Kill Time Before Drop</h2>
+      <p style="color:var(--text-dim);font-size:14px;margin-top:8px;max-width:560px;">Room ID ka wait karte waqt bore mat ho. Airdrop crates girte hi click karke loot karo — 25 second ka round, jitne points utni badi flex. High score leaderboard par sabko dikhega.</p>
+    </div>
+    <div class="reg-wrap">
+      <div class="game-card">
+        <div class="game-top">
+          <div class="game-metric">Score: <span id="gameScore">0</span></div>
+          <div class="game-metric">Time: <span id="gameTime">25</span>s</div>
+        </div>
+        <div class="game-stage" id="gameStage">
+          <div class="game-overlay" id="gameOverlay">
+            <div style="font-size:40px;">📦</div>
+            <h3 style="font-size:20px;">Loot Rush</h3>
+            <p style="color:var(--text-dim);font-size:13px;max-width:280px;">Falling crates par click karo ground pe girne se pehle. 25 second ka round.</p>
+            <button class="btn-primary" onclick="startGame()">Start Round</button>
+          </div>
+        </div>
+        <div id="gameEndPanel" style="display:none;">
+          <div class="name-prompt">
+            <input type="text" id="playerNameInput" placeholder="Apna naam likho" maxlength="24">
+            <button class="btn-primary" onclick="saveScore()">Save Score</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:14px;font-family:'Rajdhani';text-transform:uppercase;">Lounge Leaderboard</h3>
+        <div id="leaderboardList">
+          <p style="color:var(--text-dim);font-size:13px;">Abhi koi score nahi hai — pehla loot tumhara ho sakta hai!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="rules">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Format</div>
+      <h2>Tournament Rules</h2>
+    </div>
+    <ul class="rules-list">
+      <li><div><strong>Squad size — 4 players</strong><p>Har team me exactly 4 players honge (1 sub optional, match se pehle bata dein).</p></div></li>
+      <li><div><strong>Entry fee — ₹1000 per squad</strong><p>Payment registration form ke neeche diye UPI details par karein, screenshot organizer ko WhatsApp par bhejein.</p></div></li>
+      <li><div><strong>Room ID & Password</strong><p>Match se 15 minute pehle registered WhatsApp number par room ID/password bheja jayega.</p></div></li>
+      <li><div><strong>Fair play only</strong><p>Hacks, emulator abuse (agar mobile-only event hai), ya teaming — sabhi disqualify ho jayenge, entry fee refund nahi hoga.</p></div></li>
+      <li><div><strong>Points system</strong><p>Placement points + per-kill points milakar final leaderboard decide hoga (multiple matches ho sakte hain).</p></div></li>
+      <li><div><strong>Decisions are final</strong><p>Kisi bhi dispute par organizer ka decision final hoga.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="register">
+  <div class="container">
+    <div class="section-head">
+      <div class="tag">Join the Fight</div>
+      <h2>Register Your Squad</h2>
+    </div>
+    <div class="reg-wrap">
+      <div class="card">
+        <div class="fee-note">⚠️ Entry fee ₹1000 hai. Registration ke baad neeche diye UPI ID par payment karein aur screenshot organizer ko bhejein — tabhi entry confirm hogi.</div>
+        <form id="regForm">
+          <div class="field"><label>Squad / Team Name</label><input type="text" id="teamName" required></div>
+          <div class="field-row">
+            <div class="field"><label>Captain Name</label><input type="text" id="capName" required></div>
+            <div class="field"><label>Captain Free Fire UID</label><input type="text" id="capUID" required></div>
+          </div>
+          <div class="field"><label>WhatsApp Number (Room ID isi par milega)</label><input type="tel" id="whatsapp" required></div>
+          <div class="field-row">
+            <div class="field"><label>Player 2 UID</label><input type="text" id="p2"></div>
+            <div class="field"><label>Player 3 UID</label><input type="text" id="p3"></div>
+          </div>
+          <div class="field"><label>Player 4 UID (optional sub)</label><input type="text" id="p4"></div>
+          <button type="submit" class="btn-primary" style="width:100%;">Submit Registration</button>
+          <div id="regMsg"></div>
+        </form>
+
+        <div class="payment-box">
+          <h3>Payment Details</h3>
+          <div class="upi-code">
+            <span id="upiId">your-upi-id@bank</span>
+            <button class="copy-btn" onclick="copyUPI()">Copy</button>
+          </div>
+          <p style="font-size:13px;color:var(--text-dim);">₹1000 send karke screenshot WhatsApp number <b id="orgWhatsapp">+91-XXXXXXXXXX</b> par bhejein.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:14px;font-family:'Rajdhani';text-transform:uppercase;">Prize Pool</h3>
+        <p style="color:var(--text-dim);font-size:14px;margin-bottom:18px;">Total prize pool registered squads ki sankhya par depend karta hai. Jaise-jaise squads join karenge, pool update hoga.</p>
+        <div class="stat-card" style="border-radius:8px;border:1px solid var(--border);margin-bottom:14px;">
+          <div class="num" id="poolAmount">₹0</div>
+          <div class="label">Estimated Pool (70% of collected fees)</div>
+        </div>
+        <p style="font-size:12px;color:var(--text-dim);">Final prize distribution (1st / 2nd / 3rd / MVP) organizer dwara match ke pehle confirm kiya jayega.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="organizers" style="padding-top:56px;padding-bottom:56px;">
+  <div class="container">
+    <div class="section-head" style="text-align:center;">
+      <div class="tag">Meet the Team</div>
+      <h2>Tournament Organizers</h2>
+    </div>
+    <div class="organizers-wrap">
+      <div class="organizer-photo-card">
+        <div class="organizer-names"><span class="a">Akash</span> &amp; <span class="v">Vikash</span></div>
+        <div class="role">Tournament Organizers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Khushinagar Fire Warriors Cup — Fan-organized Free Fire Max tournament. Not affiliated with Garena.</p>
+  <p style="margin-top:6px;">Organized by <b style="color:var(--yellow);">Akash</b> &amp; <b style="color:var(--cyan);">Vikash</b></p>
+  <p style="margin-top:8px;"><a href="#" class="admin-link" onclick="openAdmin();return false;">Organizer Login</a></p>
+</footer>
+
+<!-- ADMIN MODAL -->
+<div class="modal-overlay" id="adminOverlay">
+  <div class="modal">
+    <span class="close-x" onclick="closeAdmin()">✕</span>
+    <div id="adminLoginView">
+      <h3>Organizer Login</h3>
+      <div class="field"><label>Password</label><input type="password" id="adminPass"></div>
+      <button class="btn-primary" style="width:100%;" onclick="tryAdminLogin()">Login</button>
+      <p style="font-size:12px;color:var(--text-dim);margin-top:10px;">Sirf organizer ke liye — password kisi ke saath share na karein.</p>
+    </div>
+    <div id="adminPanelView" style="display:none;">
+      <p style="color:var(--text-dim);font-size:12px;margin-bottom:14px;">Logged in as organizer — <b style="color:var(--yellow);">Akash</b> &amp; <b style="color:var(--cyan);">Vikash</b></p>
+      <h3>Post a Live Update</h3>
+      <div class="field"><input type="text" id="newUpdateText" placeholder="e.g. Round 2 room ID sent to all squads"></div>
+      <button class="btn-primary" style="width:100%;margin-bottom:20px;" onclick="postUpdate()">Post Update</button>
+
+      <h3>Registered Squads (<span id="adminSquadCount">0</span>)</h3>
+      <div id="adminRegList" style="max-height:220px;overflow-y:auto;margin-bottom:16px;"></div>
+
+      <h3>Recent Updates</h3>
+      <div id="adminUpdatesList" style="max-height:180px;overflow-y:auto;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ADMIN_PASSWORD = "@akash12"; // ⚠️ tournament host: is password ko change karein
+const ENTRY_FEE = 1000;
+const UPI_ID = "8528526301@fam"; // ⚠️ apna real UPI ID yahan daalein
+const ORG_WHATSAPP = "8528526301"; // ⚠️ apna WhatsApp number yahan daalein
+
+document.getElementById('upiId').textContent = UPI_ID;
+document.getElementById('orgWhatsapp').textContent = ORG_WHATSAPP;
+
+function copyUPI(){
+  navigator.clipboard.writeText(UPI_ID);
+  const btn = event.target;
+  const old = btn.textContent;
+  btn.textContent = "Copied!";
+  setTimeout(()=>btn.textContent=old, 1500);
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+async function safeGet(key, shared){
+  try{
+    const res = await window.storage.get(key, shared);
+    return res ? JSON.parse(res.value) : [];
+  }catch(e){
+    return [];
+  }
+}
+async function safeSet(key, value, shared){
+  try{
+    await window.storage.set(key, JSON.stringify(value), shared);
+    return true;
+  }catch(e){
+    console.error("storage error", e);
+    return false;
+  }
+}
+
+async function loadUpdates(){
+  const updates = await safeGet('live_updates', true);
+  const track = document.getElementById('tickerContent');
+  const parent = document.getElementById('tickerTrack');
+  if(updates.length === 0){
+    track.textContent = "Tournament announcements yahan live dikhengi — organizer jaldi update karenge.";
+  } else {
+    const text = updates.slice(-8).reverse().map(u => `📢 ${escapeHtml(u.text)}`).join('   •   ');
+    parent.innerHTML = `<span>${text}</span><span>${text}</span>`;
+  }
+}
+
+async function loadStats(){
+  const regs = await safeGet('registrations', true);
+  document.getElementById('squadCount').textContent = regs.length;
+  document.getElementById('poolAmount').textContent = '₹' + Math.round(regs.length * ENTRY_FEE * 0.7);
+}
+
+document.getElementById('regForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  if(new Date() > REG_DEADLINE){
+    const msg = document.getElementById('regMsg');
+    msg.textContent = "⛔ Registration band ho chuki hai (deadline: 31 October 2026).";
+    msg.style.color = "var(--red)";
+    return;
+  }
+  const msg = document.getElementById('regMsg');
+  msg.textContent = "Submitting…";
+  msg.style.color = "var(--text-dim)";
+
+  const entry = {
+    id: Date.now() + '-' + Math.random().toString(36).slice(2,7),
+    teamName: document.getElementById('teamName').value.trim(),
+    capName: document.getElementById('capName').value.trim(),
+    capUID: document.getElementById('capUID').value.trim(),
+    whatsapp: document.getElementById('whatsapp').value.trim(),
+    p2: document.getElementById('p2').value.trim(),
+    p3: document.getElementById('p3').value.trim(),
+    p4: document.getElementById('p4').value.trim(),
+    time: new Date().toISOString(),
+    paid: false
+  };
+
+  const regs = await safeGet('registrations', true);
+  regs.push(entry);
+  const ok = await safeSet('registrations', regs, true);
+
+  if(ok){
+    msg.textContent = "✅ Registration ho gaya! Ab ₹1000 UPI ID par bhejein aur screenshot WhatsApp par bhejein.";
+    msg.style.color = "#3ddc84";
+    document.getElementById('regForm').reset();
+    loadStats();
+  } else {
+    msg.textContent = "❌ Kuch gadbad hui, dobara try karein.";
+    msg.style.color = "var(--red)";
+  }
+});
+
+// ADMIN
+function openAdmin(){ document.getElementById('adminOverlay').classList.add('open'); }
+function closeAdmin(){
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.getElementById('adminLoginView').style.display = 'block';
+  document.getElementById('adminPanelView').style.display = 'none';
+  document.getElementById('adminPass').value = '';
+}
+function tryAdminLogin(){
+  const pass = document.getElementById('adminPass').value;
+  if(pass === ADMIN_PASSWORD){
+    document.getElementById('adminLoginView').style.display = 'none';
+    document.getElementById('adminPanelView').style.display = 'block';
+    loadAdminData();
+  } else {
+    alert("Galat password!");
+  }
+}
+async function loadAdminData(){
+  const regs = await safeGet('registrations', true);
+  document.getElementById('adminSquadCount').textContent = regs.length;
+  const regList = document.getElementById('adminRegList');
+  regList.innerHTML = regs.length ? regs.slice().reverse().map(r =>
+    `<div class="reg-row"><b>${escapeHtml(r.teamName)}</b> — Capt: ${escapeHtml(r.capName)} (UID ${escapeHtml(r.capUID)}) — WA: ${escapeHtml(r.whatsapp)}</div>`
+  ).join('') : '<p style="color:var(--text-dim);font-size:13px;">Abhi koi registration nahi hai.</p>';
+
+  const updates = await safeGet('live_updates', true);
+  const upList = document.getElementById('adminUpdatesList');
+  upList.innerHTML = updates.length ? updates.slice().reverse().map(u =>
+    `<div class="update-row">${new Date(u.time).toLocaleString()} — ${escapeHtml(u.text)}</div>`
+  ).join('') : '<p style="color:var(--text-dim);font-size:13px;">Koi update nahi hai.</p>';
+}
+async function postUpdate(){
+  const input = document.getElementById('newUpdateText');
+  const text = input.value.trim();
+  if(!text) return;
+  const updates = await safeGet('live_updates', true);
+  updates.push({text, time: new Date().toISOString()});
+  await safeSet('live_updates', updates, true);
+  input.value = '';
+  loadAdminData();
+  loadUpdates();
+}
+
+// initial load + polling for "live" feel
+loadUpdates();
+loadStats();
+setInterval(()=>{ loadUpdates(); loadStats(); }, 15000);
+
+// ===== LOOT RUSH MINI-GAME (waiting lounge time-pass) =====
+let gameActive = false;
+let gameScore = 0;
+let gameTimeLeft = 25;
+let gameTickInterval = null;
+let spawnInterval = null;
+let lastScore = 0;
+
+function startGame(){
+  document.getElementById('gameOverlay').classList.add('hidden');
+  document.getElementById('gameEndPanel').style.display = 'none';
+  document.getElementById('playerNameInput').value = '';
+  document.querySelectorAll('.crate').forEach(c => c.remove());
+
+  gameScore = 0;
+  gameTimeLeft = 25;
+  document.getElementById('gameScore').textContent = gameScore;
+  document.getElementById('gameTime').textContent = gameTimeLeft;
+  gameActive = true;
+
+  spawnInterval = setInterval(spawnCrate, 550);
+  gameTickInterval = setInterval(()=>{
+    gameTimeLeft--;
+    document.getElementById('gameTime').textContent = gameTimeLeft;
+    if(gameTimeLeft <= 0) endGame();
+  }, 1000);
+}
+
+function spawnCrate(){
+  if(!gameActive) return;
+  const stage = document.getElementById('gameStage');
+  const crate = document.createElement('div');
+  crate.className = 'crate';
+  const items = ['📦','🎯','💰','🔫','🛡️'];
+  crate.textContent = items[Math.floor(Math.random() * items.length)];
+  crate.style.left = (Math.random() * 88) + '%';
+  const duration = 2 + Math.random() * 1.6;
+  crate.style.animationDuration = duration + 's';
+  crate.addEventListener('animationend', () => crate.remove());
+  crate.addEventListener('click', () => {
+    if(!gameActive || crate.classList.contains('popped')) return;
+    gameScore += 10;
+    document.getElementById('gameScore').textContent = gameScore;
+    crate.classList.add('popped');
+    setTimeout(() => crate.remove(), 250);
+  });
+  stage.appendChild(crate);
+}
+
+function endGame(){
+  gameActive = false;
+  clearInterval(spawnInterval);
+  clearInterval(gameTickInterval);
+  document.querySelectorAll('.crate').forEach(c => c.remove());
+  lastScore = gameScore;
+
+  const overlay = document.getElementById('gameOverlay');
+  overlay.classList.remove('hidden');
+  overlay.innerHTML = `
+    <div style="font-size:40px;">🏆</div>
+    <h3 style="font-size:20px;">Round Over!</h3>
+    <p style="color:var(--text-dim);font-size:14px;">Tumhara score: <span style="color:var(--yellow);font-weight:700;">${lastScore}</span></p>
+    <button class="btn-primary" onclick="startGame()">Play Again</button>
+  `;
+  document.getElementById('gameEndPanel').style.display = 'block';
+}
+
+async function saveScore(){
+  const nameInput = document.getElementById('playerNameInput');
+  const name = nameInput.value.trim();
+  if(!name){ alert('Pehle apna naam daalo!'); return; }
+
+  const lb = await safeGet('loot_rush_leaderboard', true);
+  lb.push({ name, score: lastScore, time: new Date().toISOString() });
+  lb.sort((a,b) => b.score - a.score);
+  const ok = await safeSet('loot_rush_leaderboard', lb.slice(0, 20), true);
+
+  if(ok){
+    nameInput.value = '';
+    nameInput.placeholder = 'Score saved! ✅';
+    loadLeaderboard();
+  } else {
+    alert('Score save nahi ho paya, dobara try karein.');
+  }
+}
+
+async function loadLeaderboard(){
+  const lb = await safeGet('loot_rush_leaderboard', true);
+  const el = document.getElementById('leaderboardList');
+  if(lb.length === 0){
+    el.innerHTML = '<p style="color:var(--text-dim);font-size:13px;">Abhi koi score nahi hai — pehla loot tumhara ho sakta hai!</p>';
+    return;
+  }
+  el.innerHTML = lb.slice(0, 10).map((r, i) => `
+    <div class="lb-row"><span class="rank">#${i+1}</span><span class="name">${escapeHtml(r.name)}</span><span class="score">${r.score}</span></div>
+  `).join('');
+}
+
+loadLeaderboard();
+setInterval(loadLeaderboard, 15000);
+
+// ===== REGISTRATION COUNTDOWN =====
+const REG_DEADLINE = new Date('2026-10-31T23:59:59+05:30');
+const TOURNAMENT_START = new Date(REG_DEADLINE.getTime() + 20*24*60*60*1000);
+
+function formatDateIN(d){
+  return d.toLocaleDateString('en-IN', {day:'numeric', month:'long', year:'numeric'});
+}
+document.getElementById('tournamentDateText').textContent = formatDateIN(TOURNAMENT_START);
+
+function closeRegistration(){
+  const form = document.getElementById('regForm');
+  if(form && !form.dataset.locked){
+    form.dataset.locked = "true";
+    form.querySelectorAll('input, button').forEach(el => el.disabled = true);
+    const msg = document.getElementById('regMsg');
+    msg.textContent = "⛔ Registration band ho chuki hai (deadline: 31 October 2026).";
+    msg.style.color = "var(--red)";
+  }
+  const eyebrowText = document.getElementById('heroEyebrowText');
+  if(eyebrowText) eyebrowText.textContent = "Registration Closed";
+  const dot = document.querySelector('.dot-live');
+  if(dot) dot.style.background = "var(--red)";
+}
+
+function updateCountdown(){
+  const now = new Date();
+  const diff = REG_DEADLINE - now;
+  const label = document.getElementById('cdLabel');
+
+  if(diff <= 0){
+    document.getElementById('cdDays').textContent = '00';
+    document.getElementById('cdHours').textContent = '00';
+    document.getElementById('cdMins').textContent = '00';
+    document.getElementById('cdSecs').textContent = '00';
+    label.textContent = 'Registration Closed';
+    label.classList.add('cd-closed');
+    closeRegistration();
+    return;
+  }
+
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff / (1000*60*60)) % 24);
+  const m = Math.floor((diff / (1000*60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+  document.getElementById('cdDays').textContent = String(d).padStart(2,'0');
+  document.getElementById('cdHours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cdMins').textContent = String(m).padStart(2,'0');
+  document.getElementById('cdSecs').textContent = String(s).padStart(2,'0');
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
